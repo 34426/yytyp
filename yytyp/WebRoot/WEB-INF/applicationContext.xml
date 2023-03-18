@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/yingyouer?useUnicode=true&amp;characterEncoding=utf-8">
+		</property>
+		<property name="username" value="root"></property><!-- 数据库的连接名 -->
+		<property name="password" value="123456"></property><!-- 数据库的连接密码，需要改成你自己的 -->
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.SQLServerDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/itbaizhan/model/TAdmin.hbm.xml</value>
+			    <value>com/itbaizhan/model/TLeibie.hbm.xml</value>
+			    <value>com/itbaizhan/model/TGoods.hbm.xml</value>
+			    <value>com/itbaizhan/model/THuiyuan.hbm.xml</value>
+			    <value>com/itbaizhan/model/TMingxi.hbm.xml</value>
+			    <value>com/itbaizhan/model/TOrder.hbm.xml</value>
+			    <value>com/itbaizhan/model/TPingjia.hbm.xml</value>
+			    <value>com/itbaizhan/model/TLiuyan.hbm.xml</value>
+			    <value>com/itbaizhan/model/TCuxiao.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	
+	<!-- 后台的登录 -->
+	<bean id="loginService" class="com.itbaizhan.service.loginService">
+		<property name="adminDAO">
+			<ref bean="TAdminDAO" />
+		</property>
+		<property name="leibieDAO">
+			<ref bean="TLeibieDAO" />
+		</property>
+		<property name="huiyuanDAO">
+			<ref bean="THuiyuanDAO" />
+		</property>
+	</bean>
+	
+	
+	<bean id="cartService" class="com.itbaizhan.service.cartService">
+	</bean>
+	
+	
+	
+	
+	
+	<bean id="TAdminDAO" class="com.itbaizhan.dao.TAdminDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	
+	<bean id="indexAction" class="com.itbaizhan.action.indexAction" scope="prototype">
+	    <property name="leibieDAO">
+			<ref bean="TLeibieDAO" />
+		</property>
+	</bean>
+	
+	
+	
+	
+	
+	<bean id="TLeibieDAO" class="com.itbaizhan.dao.TLeibieDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="leibieAction" class="com.itbaizhan.action.leibieAction" scope="prototype">
+		<property name="leibieDAO">
+			<ref bean="TLeibieDAO" />
+		</property>
+	</bean>
+	
+	
+	<bean id="TGoodsDAO" class="com.itbaizhan.dao.TGoodsDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="goodsAction" class="com.itbaizhan.action.goodsAction" scope="prototype">
+		<property name="goodsDAO">
+			<ref bean="TGoodsDAO" />
+		</property>
+	</bean>
+	
+	
+	
+	
+	<bean id="THuiyuanDAO" class="com.itbaizhan.dao.THuiyuanDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="huiyuanAction" class="com.itbaizhan.action.huiyuanAction" scope="prototype">
+		<property name="huiyuanDAO">
+			<ref bean="THuiyuanDAO" />
+		</property>
+	</bean>
+	
+	
+	
+	
+	<bean id="TMingxiDAO" class="com.itbaizhan.dao.TMingxiDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	
+	
+	
+	<bean id="TOrderDAO" class="com.itbaizhan.dao.TOrderDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="buyAction" class="com.itbaizhan.action.buyAction" scope="prototype">
+		<property name="goodsDAO">
+			<ref bean="TGoodsDAO" />
+		</property>
+		<property name="orderDAO">
+			<ref bean="TOrderDAO" />
+		</property>
+		<property name="mingxiDAO">
+			<ref bean="TMingxiDAO" />
+		</property>
+	</bean>
+	
+	<bean id="TPingjiaDAO" class="com.itbaizhan.dao.TPingjiaDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="pingjiaAction" class="com.itbaizhan.action.pingjiaAction" scope="prototype">
+		<property name="pingjiaDAO">
+			<ref bean="TPingjiaDAO" />
+		</property>
+	</bean>
+	
+	
+	
+	<bean id="TLiuyanDAO" class="com.itbaizhan.dao.TLiuyanDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="liuyanAction" class="com.itbaizhan.action.liuyanAction" scope="prototype">
+		<property name="liuyanDAO">
+			<ref bean="TLiuyanDAO" />
+		</property>
+	</bean>
+	
+	<bean id="TCuxiaoDAO" class="com.itbaizhan.dao.TCuxiaoDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="cuxiaoAction" class="com.itbaizhan.action.cuxiaoAction" scope="prototype">
+		<property name="cuxiaoDAO">
+			<ref bean="TCuxiaoDAO" />
+		</property>
+	</bean>
+	</beans>
